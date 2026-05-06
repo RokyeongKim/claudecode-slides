@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code 온보딩 세션 (90분)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --r-background-color: #080810;
+    --r-main-font: 'Noto Sans KR', sans-serif;
+    --r-heading-font: 'Noto Sans KR', sans-serif;
+    --r-code-font: 'JetBrains Mono', monospace;
+    --r-main-font-size: 28px;
+    --r-main-color: #e0e0ec;
+    --r-heading-color: #ffffff;
+    --r-link-color: #d4a574;
+    --accent: #d4a574;
+    --accent2: #7eb8da;
+    --accent3: #a8d5a2;
+    --dim: #7a7a94;
+    --surface: rgba(255,255,255,0.04);
+    --surface2: rgba(255,255,255,0.07);
+    --glow-accent: rgba(212,165,116,0.15);
+    --glow-blue: rgba(126,184,218,0.12);
+    --glow-green: rgba(168,213,162,0.10);
+  }
+
+  .reveal { font-weight: 300; line-height: 1.6; }
+  .reveal h1, .reveal h2, .reveal h3 { font-weight: 700; letter-spacing: -0.025em; line-height: 1.25; }
+  .reveal h1 { text-shadow: none; }
+  .reveal h3 { margin-bottom: 0.4em; }
+
+  .reveal code {
+    font-family: var(--r-code-font); background: var(--surface2);
+    padding: 2px 8px; border-radius: 5px; font-size: 0.85em; color: var(--accent);
+  }
+  .reveal pre { width: 90%; margin: 0.7em auto; box-shadow: none; }
+  .reveal pre code {
+    background: rgba(12,12,25,0.95); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px; padding: 1em 1.2em; font-size: 0.58em; line-height: 1.7;
+    color: #c0c0d4; max-height: 500px;
+  }
+
+  .reveal table { margin: 0.6em auto; border-collapse: separate; border-spacing: 0; font-size: 0.58em; width: 92%; }
+  .reveal table th {
+    background: linear-gradient(135deg, var(--surface2), rgba(212,165,116,0.06));
+    color: var(--accent); font-weight: 600; padding: 0.55em 0.8em;
+    border-bottom: 2px solid rgba(212,165,116,0.25); text-align: left;
+  }
+  .reveal table td { padding: 0.45em 0.8em; border-bottom: 1px solid rgba(255,255,255,0.04); text-align: left; transition: background 0.2s; }
+  .reveal table tr:hover td { background: rgba(255,255,255,0.02); }
+  .reveal table tr:last-child td { border-bottom: none; }
+
+  .reveal blockquote {
+    background: linear-gradient(135deg, var(--surface), rgba(212,165,116,0.04));
+    border-left: 3px solid var(--accent); padding: 0.6em 1.2em; margin: 0.6em auto;
+    width: 88%; font-style: italic; font-size: 0.78em; border-radius: 0 10px 10px 0; color: #b0b0c4;
+  }
+
+  .reveal .slides section { padding: 28px 40px; }
+
+  /* ---- Title ---- */
+  .title-slide h1 {
+    font-size: 2.8em; font-weight: 900;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 50%, var(--accent2) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 0.1em;
+  }
+  .title-slide .subtitle { font-size: 1em; color: var(--dim); font-weight: 300; margin-top: 0.5em; }
+  .title-slide .meta { font-size: 0.7em; color: var(--dim); opacity: 0.6; }
+
+  /* ---- Section divider ---- */
+  .section-divider { text-align: center; }
+  .section-divider h2 {
+    font-size: 2.6em; font-weight: 900;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .section-divider .part-label {
+    font-size: 0.75em; color: var(--accent); font-weight: 600;
+    letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.2em;
+    opacity: 0.8;
+  }
+  .section-divider .sub { font-size: 0.7em; color: var(--dim); margin-top: 0.6em; }
+  .section-divider .line { width: 60px; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); margin: 0.8em auto; border-radius: 2px; }
+
+  /* ---- Cards ---- */
+  .highlight-box {
+    background: linear-gradient(135deg, rgba(212,165,116,0.1) 0%, rgba(126,184,218,0.06) 100%);
+    border: 1px solid rgba(212,165,116,0.18); border-radius: 14px;
+    padding: 1em 1.3em; margin: 0.6em auto; width: 88%; text-align: left;
+    backdrop-filter: blur(4px);
+  }
+  .highlight-box.green { background: linear-gradient(135deg, rgba(168,213,162,0.1) 0%, rgba(126,184,218,0.06) 100%); border-color: rgba(168,213,162,0.2); }
+  .highlight-box.blue { background: linear-gradient(135deg, rgba(126,184,218,0.1) 0%, rgba(168,213,162,0.04) 100%); border-color: rgba(126,184,218,0.2); }
+
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9em; margin: 0.7em auto; width: 92%; }
+  .compare-grid.tri { grid-template-columns: 1fr 1fr 1fr; }
+  .compare-grid.quad { grid-template-columns: 1fr 1fr; gap: 0.8em; }
+  .compare-card {
+    background: linear-gradient(160deg, var(--surface) 0%, rgba(255,255,255,0.02) 100%);
+    border: 1px solid rgba(255,255,255,0.05); border-radius: 12px;
+    padding: 0.9em 1em; text-align: left; transition: border-color 0.3s, transform 0.2s;
+  }
+  .compare-card:hover { border-color: rgba(255,255,255,0.12); transform: translateY(-1px); }
+  .compare-card h4 { color: var(--accent); font-size: 0.78em; font-weight: 600; margin: 0 0 0.4em 0; }
+  .compare-card p { font-size: 0.58em; line-height: 1.65; color: var(--dim); margin: 0; }
+  .compare-card.accent-border { border-color: rgba(212,165,116,0.22); }
+  .compare-card.blue-border { border-color: rgba(126,184,218,0.22); }
+  .compare-card.green-border { border-color: rgba(168,213,162,0.22); }
+
+  .diagram {
+    background: rgba(8,8,20,0.9); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px; padding: 1em; margin: 0.6em auto; width: 88%;
+    text-align: left; font-family: var(--r-code-font); font-size: 0.48em; line-height: 1.55; color: #9090a8; white-space: pre;
+  }
+
+  /* ---- Tags ---- */
+  .tag { display: inline-block; background: rgba(212,165,116,0.12); color: var(--accent); padding: 0.15em 0.55em; border-radius: 20px; font-size: 0.58em; font-weight: 500; }
+  .tag.blue { background: rgba(126,184,218,0.12); color: var(--accent2); }
+  .tag.green { background: rgba(168,213,162,0.12); color: var(--accent3); }
+  .tag.demo { background: rgba(220,120,60,0.18); color: #f0a060; font-weight: 700; font-size: 0.52em; letter-spacing: 0.06em; }
+  .tag.live { background: rgba(220,60,60,0.18); color: #f07070; font-weight: 700; font-size: 0.52em; letter-spacing: 0.06em; }
+
+  /* ---- Typography helpers ---- */
+  .key-message { font-size: 1.3em; font-weight: 700; text-align: center; line-height: 1.55; color: #fff; margin: 0.8em 0; }
+  .key-message em { color: var(--accent); font-style: normal; }
+  .small { font-size: 0.7em; color: var(--dim); }
+  .smaller { font-size: 0.6em; color: var(--dim); }
+  .spacer { margin-top: 1.5em; }
+  .spacer-sm { margin-top: 0.8em; }
+  .center { text-align: center; }
+  .accent-line { width: 60px; height: 3px; background: var(--accent); margin: 0.5em auto; border-radius: 2px; }
+
+  /* ---- Slide number & progress ---- */
+  .reveal .slide-number { font-family: var(--r-code-font); font-size: 11px; color: rgba(255,255,255,0.2); background: transparent; }
+  .reveal .progress { color: var(--accent); height: 2px; }
+
+  /* ---- Celebration ---- */
+  .celebration {
+    background: linear-gradient(135deg, rgba(212,165,116,0.12), rgba(168,213,162,0.08));
+    border: 1px solid rgba(212,165,116,0.2); border-radius: 16px;
+    padding: 1.3em 1.5em; margin: 1em auto; width: 75%; text-align: center;
+  }
+
+  /* ---- Big number ---- */
+  .big-num { font-size: 2.5em; font-weight: 900; line-height: 1; }
+
+  /* ---- Fragment fade-up override ---- */
+  .reveal .slides section .fragment { transition: all 0.4s ease; }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ===== 1. 타이틀 ===== -->
+<section class="title-slide" data-background-gradient="radial-gradient(ellipse at 25% 55%, var(--glow-accent) 0%, transparent 55%), radial-gradient(ellipse at 75% 30%, var(--glow-blue) 0%, transparent 45%)">
+  <h1>Claude Code<br>온보딩 세션</h1>
+  <div class="accent-line" style="margin:0.8em auto;"></div>
+  <p style="font-size:0.78em; color:var(--dim); margin:0;">"이건 써봐야 안다" &mdash; Small Win 하나로 행동 전환<br>
+  <span style="font-size:0.82em; opacity:0.6;">90분 | 비개발자 대상 | 실전형 워크숍</span></p>
+  <div style="margin-top:3em;"></div>
+  <p style="font-size:0.72em; color:var(--dim); margin:0; opacity:0.6;">김노경 &nbsp;&middot;&nbsp; junsun8k@gmail.com</p>
+</section>
+
+<!-- ===== 2. 오늘의 여정 ===== -->
+<section>
+  <h3>오늘의 여정</h3>
+  <p class="small">90분, 5개 파트로 구성된 실전 온보딩</p>
+  <table>
+    <thead><tr><th>시간</th><th>파트</th><th>내용</th><th>형식</th></tr></thead>
+    <tbody>
+      <tr><td>0~15분</td><td>Part 1</td><td>왜 터미널인가? + 기본 세팅</td><td>설명 + 데모</td></tr>
+      <tr><td>15~45분</td><td>Part 2</td><td>핵심 기능 4가지 (개념&rarr;데모 반복)</td><td>데모 중심</td></tr>
+      <tr><td>45~60분</td><td>Part 3</td><td>쇼케이스 &mdash; 이런 것까지 된다</td><td>시연 + 설명</td></tr>
+      <tr><td>60~75분</td><td>Part 4</td><td>같이 해보기 &mdash; 첫 Small Win</td><td>핸즈온 실습</td></tr>
+      <tr><td>75~90분</td><td>Part 5</td><td>첫 페달을 밟아보세요! + Q&amp;A</td><td>마무리</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ===== 3. Part 1 디바이더 ===== -->
+<section class="section-divider" data-background-gradient="radial-gradient(ellipse at 50% 50%, var(--glow-accent) 0%, transparent 55%)">
+  <p class="part-label">Part 1</p>
+  <h2>왜 터미널인가?</h2>
+  <div class="line"></div>
+  <p class="sub">Claude Code = 터미널에서 돌아가는 AI 비서 | 15분</p>
+</section>
+
+<!-- ===== 4. Claude Code 한 줄 소개 ===== -->
+<section>
+  <h3>Claude Code 한 줄 소개</h3>
+  <div class="highlight-box center">
+    <p style="font-size:1.05em; font-weight:700; color:#fff; margin:0;">터미널에서 돌아가는 Claude<br>= <span style="color:var(--accent);">내 컴퓨터의 모든 걸 활용하는 AI 비서</span></p>
+  </div>
+  <div class="compare-grid" style="margin-top:0.9em;">
+    <div class="compare-card">
+      <h4>GUI (그래픽 인터페이스)</h4>
+      <p>마우스로 클릭하는 방식<br>우리가 평소 쓰는 대부분의 앱</p>
+    </div>
+    <div class="compare-card accent-border">
+      <h4>CLI (명령줄 인터페이스)</h4>
+      <p>텍스트를 타이핑해서 명령하는 방식<br>까만 화면이지만 AI에겐 가장 빠르고 강력</p>
+    </div>
+  </div>
+  <blockquote>오늘 세션은 터미널 기준으로 진행합니다 &mdash; 가장 가볍고 빠르기 때문입니다.</blockquote>
+</section>
+
+<!-- ===== 5. Cowork vs Code ===== -->
+<section>
+  <h3>Cowork vs Code &mdash; 용도가 다릅니다</h3>
+  <p class="smaller">"같은 요리사, 다른 주방"</p>
+  <table>
+    <thead><tr><th></th><th>Cowork</th><th>Code</th></tr></thead>
+    <tbody>
+      <tr><td>한 줄 요약</td><td>AI와 함께 문서 작업</td><td>AI가 내 컴퓨터에서 실행</td></tr>
+      <tr><td>잘하는 것</td><td>리서치, 문서 작성, 브레인스토밍</td><td>파일 생성, 도구 연결, 데이터 분석</td></tr>
+      <tr><td>커넥터 / 스킬 / 결과물</td><td>O</td><td>O</td></tr>
+      <tr style="color:var(--accent);font-weight:500;"><td>로컬 파일 직접 접근</td><td style="color:var(--dim);">허용한 폴더만</td><td>전체 파일시스템 &#10003;</td></tr>
+      <tr style="color:var(--accent);font-weight:500;"><td>로컬 CLI 도구 사용</td><td style="color:var(--dim);">X</td><td>O &#10003;</td></tr>
+      <tr style="color:var(--accent);font-weight:500;"><td>맥락 유지</td><td style="color:var(--dim);">프로젝트별 지식 설정</td><td>CLAUDE.md로 세션 간 유지 &#10003;</td></tr>
+      <tr style="color:var(--accent);font-weight:500;"><td>Hooks (자동화)</td><td style="color:var(--dim);">X</td><td>O &#10003;</td></tr>
+    </tbody>
+  </table>
+  <div class="compare-grid" style="margin-top:0.4em;">
+    <div class="compare-card"><h4>Cowork = 밀키트 주방</h4><p>레시피대로 따라하면 됨. 빠르고 편함</p></div>
+    <div class="compare-card accent-border"><h4>Code = 식재료 창고 주방</h4><p>뭐든 있고, 원하는 요리를 자유롭게</p></div>
+  </div>
+</section>
+
+<!-- ===== 6. Desktop vs 터미널 ===== -->
+<section>
+  <h3>Code: Desktop 앱 vs 터미널</h3>
+  <p class="smaller">같은 엔진, 다른 화면</p>
+  <table>
+    <thead><tr><th></th><th>Code (Desktop 앱)</th><th>Code (터미널)</th></tr></thead>
+    <tbody>
+      <tr><td>기능</td><td>동일</td><td>동일</td></tr>
+      <tr><td>화면</td><td>GUI &mdash; 변경사항 시각적 표시</td><td>텍스트 &mdash; 타이핑으로 조작</td></tr>
+      <tr><td>추천 대상</td><td>터미널이 낯선 분</td><td>터미널에 익숙한 분</td></tr>
+    </tbody>
+  </table>
+  <div class="highlight-box center" style="margin-top:0.6em;">
+    <p style="font-size:0.68em; margin:0; color:var(--accent2); line-height:1.8;">
+      &#127381; <strong>NEW</strong> &mdash; Computer Use: Claude가 화면을 직접 보고 클릭/입력까지 (Pro/Max, 3월 추가)
+    </p>
+  </div>
+  <div class="highlight-box center" style="margin-top:0.4em;">
+    <p style="font-size:0.78em; margin:0; font-weight:600; color:#fff;">핵심 정리</p>
+    <p style="font-size:0.68em; margin:0.3em 0 0 0; color:var(--dim); line-height:1.8;">
+      &bull; 문서 협업 &rarr; <strong style="color:var(--accent2);">Cowork</strong> &nbsp;&nbsp;
+      &bull; 실행/자동화/데이터 &rarr; <strong style="color:var(--accent);">Code</strong><br>
+      &bull; <span style="color:var(--accent);">오늘 배울 것 &rarr; Code의 진짜 위력 (스킬, MCP, 회사 데이터 연동)</span>
+    </p>
+  </div>
+</section>
+
+<!-- ===== 7. 마크다운 ===== -->
+<section>
+  <h3>마크다운(Markdown) = AI가 가장 잘 읽는 포맷</h3>
+  <p class="smaller">텍스트에 간단한 기호로 서식을 입히는 문법</p>
+  <div class="compare-grid">
+    <div class="compare-card">
+      <h4>마크다운 문법</h4>
+<pre style="margin:0;"><code style="font-size:0.85em;padding:0.5em;border:none;"># 이렇게 쓰면 → 제목
+## 이렇게 쓰면 → 소제목
+- 이렇게 쓰면 → 목록
+**이렇게 쓰면** → 굵은 글씨
+| 표 | 도 | 됨 |</code></pre>
+    </div>
+    <div class="compare-card accent-border">
+      <h4>왜 마크다운인가?</h4>
+      <p>PDF 그대로 &rarr; 표 깨짐, 이미지 텍스트 누락 가능<br>
+      마크다운 변환 &rarr; AI가 구조를 정확히 인식<br>
+      같은 내용도 토큰 절약 (= 더 많이 처리 가능)</p>
+    </div>
+  </div>
+  <blockquote>실전 팁: 중요한 PDF는 마크다운으로 변환해서 AI에게 주면 정확도가 올라갑니다.</blockquote>
+  <p class="smaller center">GitHub, Notion, Obsidian 등 대부분의 생산성 도구가 마크다운 기본 지원</p>
+</section>
+
+<!-- ===== 8. Part 2 디바이더 ===== -->
+<section class="section-divider" data-background-gradient="radial-gradient(ellipse at 50% 50%, var(--glow-blue) 0%, transparent 55%)">
+  <p class="part-label">Part 2</p>
+  <h2>핵심 기능 4가지</h2>
+  <div class="line"></div>
+  <p class="sub">개념 2분 &rarr; 실제 예시/데모 5분 반복 | 30분</p>
+</section>
+
+<!-- ===== 9. Memory ===== -->
+<section>
+  <h3><span class="tag">1</span> Memory &mdash; AI가 나를 기억한다</h3>
+  <p class="smaller">CLAUDE.md 파일에 내 맥락을 적어두면, 매 대화마다 자동으로 읽고 시작</p>
+  <blockquote>비유: 신입한테 매번 같은 걸 설명하지 않아도 되는 것</blockquote>
+  <div class="compare-grid">
+    <div class="compare-card" style="border-color:rgba(220,100,100,0.2);">
+      <h4 style="color:#e88;">&#10007; Memory 없이</h4>
+      <p>"나는 전략기획실 기획팀이고..."<br>"한국어로 써줘..."<br>"BLUF 형식으로..."<br>&rarr; 매번 반복 설명 필요</p>
+    </div>
+    <div class="compare-card green-border">
+      <h4 style="color:var(--accent3);">&#10003; CLAUDE.md 설정 후</h4>
+      <p>내 역할, 소통 규칙 자동 인식<br>프로젝트마다 다른 맥락도 구분<br>피드백 줄수록 더 정확해짐<br>&rarr; 내가 원하는 방식으로 일하는 동료</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 10. CLAUDE.md 예시 ===== -->
+<section>
+  <h3>내 CLAUDE.md 예시 <span class="tag demo">데모</span></h3>
+<pre><code># CLAUDE.md — 김노경
+
+## 직업
+SK가스 기획팀 / 전략기획 담당
+- 투자회사 관리 및 투자검토(40%): 투자회사 Exit, 포트폴리오 rebalancing, 47개 투자회사에 대한 투자정보 관리 및 업데이트, 투자검토(충전소 매입 적정성, 지분추가매입 검토) 및 DCF
+- 중점 추진과제 진척 관리 및 사업운영효율성강화(40%): LNG, LPG, 발전(UGPS), Trading, 벙커링, ESS 사업
+- 기타(20%): 회의체 운영, 사업성 검토 등</code></pre>
+  <blockquote>이게 있으면 Claude가 나를 "SK가스 기획팀 전략기획 담당"으로 이해하고 일하기 시작합니다.</blockquote>
+</section>
+
+<!-- ===== 11. CLAUDE.md 빠르게 만드는 법 ===== -->
+<section>
+  <h3>CLAUDE.md 빠르게 만드는 법</h3>
+  <div class="compare-grid">
+    <div class="compare-card">
+      <h4>방법 1: 다른 AI에서 가져오기</h4>
+      <p>claude.com/import-memory 접속<br>전용 프롬프트 복사 &rarr; ChatGPT/Gemini에 붙여넣기<br>&rarr; 결과를 Claude에 붙여넣기 (60초)</p>
+    </div>
+    <div class="compare-card">
+      <h4>방법 2: 대화하면서 자연스럽게</h4>
+      <p><code>/init</code> 명령어 &rarr; Claude가 질문을 하며 인터뷰<br>"어떤 업무 하세요?" "반복 작업은?" 등<br>&rarr; 답변 기반으로 CLAUDE.md 자동 생성</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 12. 쓸수록 서로 발전하는 관계 (분리) ===== -->
+<section data-background-gradient="radial-gradient(ellipse at 50% 50%, var(--glow-accent) 0%, transparent 50%)">
+  <h3>CLAUDE.md의 진짜 위력</h3>
+  <p class="key-message" style="font-size:1.05em;">쓸수록 서로 발전하는 관계</p>
+  <div style="width:85%; margin:0 auto; text-align:left; font-size:0.75em; line-height:1.9;">
+    <p><span style="color:var(--accent);">상황:</span> 구글폼을 만들어달라고 했더니 <span style="color:#e88;">"직접 못 합니다"</span></p>
+    <p class="fragment"><span style="color:var(--accent2);">나:</span> "검색해서라도 직접 할 수 있는 방법을 찾아봐"<br>
+    &rarr; Playwright로 브라우저를 직접 조작해서 <span style="color:var(--accent3);">해결</span></p>
+    <p class="fragment"><span style="color:var(--accent);">그 다음:</span> CLAUDE.md에 기록 &mdash;
+    <code>"할 수 없다"로 끝내지 말 것 — 항상 대안 먼저 제시</code></p>
+  </div>
+  <div class="fragment highlight-box center" style="margin-top:0.8em;">
+    <p style="font-size:0.85em; font-weight:600; color:var(--accent); margin:0;">
+      내가 피드백 &rarr; Claude 발전 &rarr; 더 많은 것 가능 &rarr; 나만의 동료 완성
+    </p>
+  </div>
+</section>
+
+<!-- ===== 13. Skills ===== -->
+<section>
+  <h3><span class="tag">2</span> Skills &mdash; 반복 업무를 매뉴얼로</h3>
+  <p class="smaller">자주 하는 작업 패턴을 마크다운 문서로 만들어두면, Claude가 매번 그대로 실행</p>
+  <blockquote>비유: 업무 매뉴얼을 만들어두면 누가 해도 같은 품질이 나오는 것</blockquote>
+  <table style="font-size:0.52em;">
+    <thead><tr><th>사용상황</th><th>스킬</th><th>하는 일</th><th>트리거</th></tr></thead>
+    <tbody>
+      <tr><td colspan="4" style="color:var(--accent2); font-weight:600; background:rgba(126,184,218,0.06); padding:0.3em 0.8em; letter-spacing:0.05em;">업무용</td></tr>
+      <tr><td>외부미팅 전</td><td style="color:var(--accent);">Quick-Scan</td><td>회사 실적추이, 주요 사업현황, 생산거점, Risk&amp;Opportunities 분석</td><td>"퀵스캔해줘"</td></tr>
+      <tr><td>계약협상</td><td style="color:var(--accent);">contract-review</td><td>계약서 조항별 리스크 분류 + 수정제안</td><td>"계약서 검토"</td></tr>
+      <tr><td>Claude 창 닫기 전</td><td style="color:var(--accent);">Wrap-up</td><td>지금까지 만든 작업 정리 + 내일 빠른 재시작을 위한 자동 저장</td><td>/wrap-up</td></tr>
+      <tr><td colspan="4" style="color:var(--accent3); font-weight:600; background:rgba(168,213,162,0.06); padding:0.3em 0.8em; letter-spacing:0.05em;">개인용</td></tr>
+      <tr><td>자산관리</td><td style="color:var(--accent);">Asset-management</td><td>자산관리 자동화, 퇴직시점에 따른 재무유지기간 자동 산출</td><td>"자산관리"</td></tr>
+    </tbody>
+  </table>
+  <div class="compare-grid" style="margin-top:0.35em;">
+    <div class="compare-card"><h4>스킬 직접 만들기</h4><p>Claude와 대화하면서 업무 매뉴얼 명시화<br>마크다운 파일 하나 = 스킬 &nbsp;|&nbsp; <code>/skill-creator</code> 활용</p></div>
+    <div class="compare-card"><h4>남이 만든 거 가져오기</h4><p>Anthropic 공식 knowledge-work-plugins<br>skills.sh &nbsp;|&nbsp; SkillHub &mdash; 89,000개+ 스킬</p></div>
+  </div>
+</section>
+
+<!-- ===== 14. Skills 실전 데모 ===== -->
+<section>
+  <h3>Skills 실전 데모 <span class="tag live">라이브 데모</span></h3>
+  <div class="compare-grid">
+    <div class="compare-card accent-border">
+      <h4 style="font-family:var(--r-code-font);">&gt; /my-context-sync</h4>
+      <p>&rarr; Slack 메시지 + Notion 할 일 + 오늘 캘린더 일정<br>터미널 한 화면에 요약</p>
+    </div>
+    <div class="compare-card blue-border">
+      <h4 style="font-family:var(--r-code-font);">&gt; 내일 OO 미팅 준비해줘</h4>
+      <p>&rarr; 회사 개요 + 대표 이력 + 최근 뉴스<br>정리된 브리핑 생성</p>
+    </div>
+  </div>
+  <div class="spacer"></div>
+  <blockquote>매일 반복하던 루틴이 한 마디로 끝납니다. 이게 자동화입니다.</blockquote>
+  <p class="smaller center">팁: 스킬은 많이 만드는 것보다, 진짜 자주 쓰는 것만 잘 만들어두는 게 효과적</p>
+</section>
+
+<!-- ===== 15. MCP ===== -->
+<section>
+  <h3><span class="tag blue">3</span> MCP &mdash; 외부 도구 연결</h3>
+  <p class="smaller">MCP(Model Context Protocol) = AI와 외부 도구를 연결하는 표준 규격</p>
+  <blockquote>비유: USB-C처럼, 하나의 규격으로 모든 도구를 연결</blockquote>
+  <table>
+    <thead><tr><th>연결한 도구</th><th>실제 활용</th></tr></thead>
+    <tbody>
+      <tr><td style="color:var(--accent2);">Notion</td><td>매일 to-do 관리, 노트 정리, 프로젝트 트래킹</td></tr>
+      <tr><td style="color:var(--accent2);">Fireflies</td><td>회의록 자동 녹취 &rarr; Obsidian에 마크다운으로 저장</td></tr>
+      <tr><td style="color:var(--accent2);">Google Calendar</td><td>"오늘 일정 알려줘" &rarr; 멀티 계정 통합 조회</td></tr>
+      <tr><td style="color:var(--accent2);">Gmail</td><td>"지난주 OO에게서 온 메일 찾아줘" &rarr; 검색 + 요약</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ===== 16. MCP 연결 방법 ===== -->
+<section>
+  <h3>MCP 연결 방법 &mdash; 처음에는 이것만</h3>
+  <table>
+    <thead><tr><th>방법</th><th>난이도</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr style="color:var(--accent);font-weight:500;"><td>Connector</td><td>&#9733;&#9734;&#9734;</td><td>이거부터 &mdash; claude.ai/settings/connectors 에서 클릭</td></tr>
+      <tr><td><code>claude mcp add</code></td><td>&#9733;&#9733;&#9734;</td><td>터미널 명령어로 직접 등록</td></tr>
+      <tr><td>Plugin</td><td>&#9733;&#9733;&#9733;</td><td><code>/plugin</code> &rarr; 탐색(Discover) + 클릭으로 설치</td></tr>
+    </tbody>
+  </table>
+  <p class="smaller center" style="margin-top:0.4em;">Plugin = MCP + 스킬 + 설정을 묶은 패키지. <code>/plugin</code>으로 탐색하고 한 번에 설치.</p>
+</section>
+
+<!-- ===== 17. 에이전트 ===== -->
+<section>
+  <h3><span class="tag green">4</span> 에이전트 &mdash; 만들어도 되고, 알아서 만들기도 합니다</h3>
+  <p class="smaller">"마케팅 에이전트, 재무 에이전트... 이걸 하나하나 만들어야 하나?" &rarr; <strong style="color:#fff;">둘 다 됩니다</strong></p>
+
+  <!-- CSS diagram -->
+  <div class="compare-grid" style="margin-top:0.6em;">
+    <div class="compare-card" style="padding:0; overflow:hidden; border-color:rgba(212,165,116,0.18);">
+      <div style="background:rgba(212,165,116,0.08); padding:0.5em 0.8em; border-bottom:1px solid rgba(212,165,116,0.12);">
+        <span style="font-size:0.65em; font-weight:600; color:var(--accent);">Subagent &mdash; 각자 일하고 리더에게 보고</span>
+      </div>
+      <div style="padding:0.8em; text-align:center;">
+        <div style="display:flex; flex-direction:column; align-items:center; gap:0.4em; font-size:0.5em;">
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:0.4em 0.8em; color:#fff;">나 (리더)</div>
+          <div style="display:flex; gap:0.4em; color:var(--accent);">&darr; &nbsp; &darr; &nbsp; &darr;</div>
+          <div style="display:flex; gap:0.4em;">
+            <div style="background:rgba(212,165,116,0.1); border:1px solid rgba(212,165,116,0.2); border-radius:6px; padding:0.35em 0.5em; color:var(--accent);">Sub A</div>
+            <div style="background:rgba(212,165,116,0.1); border:1px solid rgba(212,165,116,0.2); border-radius:6px; padding:0.35em 0.5em; color:var(--accent);">Sub B</div>
+            <div style="background:rgba(212,165,116,0.1); border:1px solid rgba(212,165,116,0.2); border-radius:6px; padding:0.35em 0.5em; color:var(--accent);">Sub C</div>
+          </div>
+          <div style="display:flex; gap:0.4em; color:var(--accent);">&darr; &nbsp; &darr; &nbsp; &darr;</div>
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:0.4em 0.8em; color:#fff;">리더가 취합</div>
+        </div>
+        <p style="font-size:0.5em; color:var(--dim); margin:0.5em 0 0 0;">각자 독립적으로 일하고, <strong style="color:var(--accent);">리더에게만</strong> 결과 보고</p>
+      </div>
+    </div>
+    <div class="compare-card" style="padding:0; overflow:hidden; border-color:rgba(126,184,218,0.18);">
+      <div style="background:rgba(126,184,218,0.08); padding:0.5em 0.8em; border-bottom:1px solid rgba(126,184,218,0.12);">
+        <span style="font-size:0.65em; font-weight:600; color:var(--accent2);">Agent Teams &mdash; 팀원끼리 소통하며 협업</span>
+      </div>
+      <div style="padding:0.8em; text-align:center;">
+        <div style="display:flex; flex-direction:column; align-items:center; gap:0.4em; font-size:0.5em;">
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:0.4em 0.8em; color:#fff;">리더</div>
+          <div style="color:var(--accent2);">&darr;</div>
+          <div style="display:flex; align-items:center; gap:0.4em;">
+            <div style="background:rgba(126,184,218,0.1); border:1px solid rgba(126,184,218,0.2); border-radius:6px; padding:0.35em 0.5em; color:var(--accent2);">Agent A</div>
+            <div style="color:var(--accent2);">&larr; &rarr;</div>
+            <div style="background:rgba(168,213,162,0.1); border:1px solid rgba(168,213,162,0.2); border-radius:6px; padding:0.35em 0.5em; color:var(--accent3);">Agent B</div>
+            <div style="color:var(--accent2);">&larr; &rarr;</div>
+            <div style="background:rgba(212,165,116,0.1); border:1px solid rgba(212,165,116,0.2); border-radius:6px; padding:0.35em 0.5em; color:var(--accent);">Agent C</div>
+          </div>
+          <div style="font-size:0.85em; color:var(--dim); margin-top:0.2em;">+ 공유 태스크 리스트</div>
+        </div>
+        <p style="font-size:0.5em; color:var(--dim); margin:0.5em 0 0 0;">에이전트끼리 <strong style="color:var(--accent2);">공유 태스크와 파일</strong>을 통해 협업</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight-box center" style="margin-top:0.5em;">
+    <p style="font-size:0.7em; margin:0; color:var(--dim); line-height:1.7;">
+      <strong style="color:var(--accent);">직접 설계할 수도 있고</strong>, 복잡한 일을 시키면 <strong style="color:var(--accent2);">Claude가 알아서 띄워주기도</strong> 합니다<br>
+      대부분의 경우 &mdash; 그냥 시키면 됩니다. 필요하면 직접 구성도 가능.
+    </p>
+  </div>
+</section>
+
+<!-- ===== 18. 에이전트 실전 예시 ===== -->
+<section>
+  <h3>에이전트 실전 예시</h3>
+<pre><code>"이 3개 회사 IR 자료 각각 분석해줘"
+→ Agent 1: A사 분석
+→ Agent 2: B사 분석  (서로 독립적 → Subagent로 병렬 처리)
+→ Agent 3: C사 분석
+→ 결과 취합해서 비교표 생성</code></pre>
+  <div class="compare-grid" style="margin-top:0.8em;">
+    <div class="compare-card center" style="border-color:rgba(220,100,100,0.18);">
+      <p style="color:#e88; margin-bottom:0.2em;">순차 처리</p>
+      <p class="big-num" style="color:#e88;">30<span style="font-size:0.4em;font-weight:400;">분</span></p>
+    </div>
+    <div class="compare-card center green-border">
+      <p style="color:var(--accent3); margin-bottom:0.2em;">병렬 처리</p>
+      <p class="big-num" style="color:var(--accent3);">10<span style="font-size:0.4em;font-weight:400;">분</span></p>
+    </div>
+  </div>
+  <blockquote>여러분이 할 일은 "3개 회사 분석해줘"라고 말하는 것뿐입니다.</blockquote>
+</section>
+
+<!-- ===== 19. 전체 구조 정리 ===== -->
+<section>
+  <h3>전체 구조 정리 &mdash; Plugin과 Hook까지</h3>
+  <div class="diagram">├─ <span style="color:var(--accent);">Memory</span> ────── CLAUDE.md (내 맥락/지시문)
+│
+├─ <span style="color:var(--accent);">Skill</span> ─────── 반복 업무를 레시피로 저장
+│   └─ <span style="color:var(--accent2);">MCP</span> ───── Slack, Calendar 등 외부 도구 연결
+│
+├─ <span style="color:var(--accent3);">Subagent</span> ──── 작업을 위임해서 병렬 처리
+│   └─ Agent Teams ── 여러 에이전트가 협업
+│
+├─ Hook ──────── 특정 이벤트 발생 시 자동 실행
+│                (예: 세션 끝나면 자동 저장)
+│
+└─ Plugin ────── MCP + 스킬 + 설정을 묶어서 한 번에 설치하는 패키지
+│                (/plugin 으로 탐색 + 설치)
+│
+└─ Computer Use ─ 화면을 보고 클릭/입력까지 (3월 추가, Pro/Max)</div>
+  <blockquote>전부 외울 필요 없습니다. 오늘은 이런 게 있다는 것만 알면 됩니다.</blockquote>
+</section>
+
+<!-- ===== 20. Part 3 디바이더 ===== -->
+<section class="section-divider" data-background-gradient="radial-gradient(ellipse at 50% 50%, var(--glow-green) 0%, transparent 55%)">
+  <p class="part-label">Part 3</p>
+  <h2>쇼케이스</h2>
+  <div class="line"></div>
+  <p class="sub">"비개발자인 내가 이런 걸 만들었다" &mdash; 가능성 체감 | 15분</p>
+</section>
+
+<!-- ===== 21. 쇼케이스: 대시보드 + 실적 (분리1) ===== -->
+<section>
+  <h3>대시보드/실적분석 등 사용 예시 <span class="tag demo">데모</span></h3>
+  <div class="compare-grid quad">
+    <div class="compare-card accent-border">
+      <h4>SK Gas 과제관리 대시보드</h4>
+      <p>행복경영캔미팅, Progress 미팅, KPI과제, C-Team tracking 과제 등 회의체별로 분산되어 관리되는 과제를 통합운영하는 dashboard</p>
+    </div>
+    <div class="compare-card green-border">
+      <h4>SKG 투자회사 관리 대시보드</h4>
+      <p>SKG 산하 47개 투자회사의 투자시점, 지분율, 장부가, 회사 기본 정보, 최근 주요 이슈사항 등을 체계적으로 관리할 수 있도록 대시보드 구축</p>
+    </div>
+    <div class="compare-card blue-border">
+      <h4>개인자산관리</h4>
+      <p>자산관리 자동화, 퇴직시점에 따른 재무유지기간 자동산출<br>씨앗모으기·씨앗불리기 기능으로 편리한 개인자산관리 시스템 구축</p>
+    </div>
+    <div class="compare-card">
+      <h4>기타 활용 예시</h4>
+      <p>이직의사결정 Advisory, 회의록 자동 생성 등<br>&rarr; 전부 Claude Code로 제작</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 23. 투자/VC ===== -->
+<section>
+  <h3>투자/VC &mdash; 피치덱 분석 &amp; 포트폴리오 뉴스 <span class="tag live">라이브 데모</span></h3>
+  <div class="compare-grid">
+    <div class="compare-card accent-border">
+      <h4 style="font-family:var(--r-code-font);">&gt; 포트폴리오 뉴스 스캔해줘</h4>
+      <p>&rarr; 피투자사별 최신 뉴스 자동 수집 + 중요도별 분류</p>
+    </div>
+    <div class="compare-card blue-border">
+      <h4 style="font-family:var(--r-code-font);">&gt; 이 피치덱 분석해줘 [PDF 드래그앤드롭]</h4>
+      <p>&rarr; 투자 매력도, 리스크 요인,<br>밸류에이션 시뮬레이션까지 자동 생성</p>
+    </div>
+  </div>
+  <div class="highlight-box center" style="margin-top:0.6em;">
+    <p style="font-size:0.9em; font-weight:700; color:#fff; margin:0;">심사역이 반나절 걸리던 사전 검토가 <span style="color:var(--accent);">10분</span>으로</p>
+  </div>
+  <div class="compare-grid" style="margin-top:0.5em;">
+    <div class="compare-card"><h4>피치덱 분석 결과물</h4><p>투자 매력도 스코어링<br>주요 리스크 요인 분류<br>밸류에이션 시뮬레이션 (DCF/Comps)</p></div>
+    <div class="compare-card"><h4>포트폴리오 뉴스 결과물</h4><p>피투자사별 최신 뉴스 수집<br>중요도별 자동 분류 (긴급/주의/참고)<br>주간 리포트 자동 생성</p></div>
+  </div>
+</section>
+
+<!-- ===== 24. 회사 데이터 연동 ===== -->
+<section>
+  <h3>게임 체인저 &mdash; 회사 데이터 연동</h3>
+  <p class="smaller">Claude Code가 내 컴퓨터에서 돌기 때문에 BigQuery에 직접 쿼리를 날릴 수 있는 것</p>
+<pre><code>gcloud CLI 설치 → 인증 → Claude Code가 bq 명령어로 직접 데이터 조회
+= 별도 스킬 필요 없이, CLI 도구만 있으면 연결 가능</code></pre>
+  <div class="compare-grid tri" style="margin-top:0.7em;">
+    <div class="compare-card accent-border"><h4>ERP</h4><p>기존 사내 시스템<br>데이터 조회/분석</p></div>
+    <div class="compare-card blue-border"><h4>Google Sheets</h4><p>스프레드시트 데이터<br>실시간 연동</p></div>
+    <div class="compare-card green-border"><h4>사내 DB</h4><p>BigQuery, PostgreSQL 등<br>자연어로 쿼리</p></div>
+  </div>
+  <blockquote>회사 데이터 연결 시 더 강력한 힘을 발휘</blockquote>
+</section>
+
+<!-- ===== 25. 어떻게 만드는 건데 ===== -->
+<section>
+  <h3>"그래서 어떻게 만드는 건데?"</h3>
+  <p class="smaller">하고 싶은 것만 명확하면 됩니다. 실행은 Claude Code가 합니다.</p>
+  <table style="font-size:0.55em;">
+    <thead><tr><th>문서</th><th>핵심 질문</th><th>카페 비유</th></tr></thead>
+    <tbody>
+      <tr><td style="color:var(--accent);font-weight:500;">PRD (요구사항)</td><td>What & Why</td><td>"3층 카페, 타겟 20대, 예산 2억"</td></tr>
+      <tr><td style="color:var(--accent2);font-weight:500;">Spec (설계서)</td><td>What 구체화</td><td>"1층 천장 3.2m, 동선 ㄱ자, 좌석 40석"</td></tr>
+      <tr><td style="color:var(--accent3);font-weight:500;">Plan (실행 계획)</td><td>How & When</td><td>"1주차: 철거&rarr;배관, 2주차: 전기&rarr;바닥"</td></tr>
+    </tbody>
+  </table>
+  <div class="compare-grid" style="margin-top:0.4em;">
+    <div class="compare-card" style="padding:0.6em 0.8em;">
+      <h4 style="margin-bottom:0.2em;">프로젝트 폴더 구조</h4>
+      <pre style="margin:0; box-shadow:none;"><code style="font-size:0.7em; padding:0.4em 0.6em; line-height:1.4; border-radius:8px;">내 컴퓨터/
+├── 프로젝트A/
+│   └── CLAUDE.md  ← "이 프로젝트"의 맥락
+├── 프로젝트B/
+│   └── CLAUDE.md  ← 다른 프로젝트의 맥락
+└── ~/.claude/
+    └── CLAUDE.md  ← "나"의 맥락</code></pre>
+    </div>
+    <div class="compare-card" style="padding:0.6em 0.8em;">
+      <h4 style="margin-bottom:0.2em;">시작 포인트</h4>
+      <p>"기획 문서 만들어줘"로 시작<br>또는 대화하다가 중간에<br>"지금까지 얘기한 거 정리해줘"<br>&rarr; <strong style="color:#fff;">PRD + Spec 합쳐진 문서 자동 생성</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 26. Part 4 디바이더 ===== -->
+<section class="section-divider" data-background-gradient="radial-gradient(ellipse at 50% 50%, var(--glow-accent) 0%, transparent 55%)">
+  <p class="part-label">Part 4</p>
+  <h2>같이 해보기</h2>
+  <div class="line"></div>
+  <p class="sub">첫 Small Win을 만드는 시간 | 15분</p>
+</section>
+
+<!-- ===== 27. 핸즈온 Step 1 (분리) ===== -->
+<section>
+  <h3>Step 1: 다른 AI에서 맥락 가져오기</h3>
+  <p class="smaller">ChatGPT나 Gemini를 오래 쓴 분은 기존 기억을 가져올 수 있습니다</p>
+  <div style="width:85%; margin:1.5em auto; text-align:left; font-size:0.82em; line-height:2.2;">
+    <p><span class="tag" style="font-size:0.7em;">1</span> &nbsp;<strong style="color:#fff;">claude.com/import-memory</strong> 접속</p>
+    <p class="fragment"><span class="tag" style="font-size:0.7em;">2</span> &nbsp;전용 프롬프트 복사 &rarr; ChatGPT/Gemini에 붙여넣기</p>
+    <p class="fragment"><span class="tag" style="font-size:0.7em;">3</span> &nbsp;결과 복사 &rarr; Claude에 붙여넣기</p>
+  </div>
+  <div class="highlight-box green center" style="margin-top:1em;">
+    <p style="font-size:0.85em; font-weight:600; color:var(--accent3); margin:0;">60초면 이전 완료</p>
+  </div>
+</section>
+
+<!-- ===== 28. 핸즈온 Step 2 (분리) ===== -->
+<section>
+  <h3>Step 2: CLAUDE.md 생성</h3>
+<pre><code>&gt; 나는 [직업/역할]이고, [주요 업무]를 해.
+&gt; [선호하는 언어/스타일] 이런 맥락으로 CLAUDE.md 만들어줘.</code></pre>
+  <div class="spacer-sm"></div>
+<pre><code>&gt; CLAUDE.md 보여줘</code></pre>
+  <div class="highlight-box center" style="margin-top:0.8em;">
+    <p style="font-size:0.72em; margin:0;">
+      <strong style="color:var(--accent);">꿀팁:</strong> "불확실하면 추측하지 말고 팝업으로 질문해서 확인할 것"<br>
+      이것만 넣어도 결과물 품질이 확 올라갑니다
+    </p>
+  </div>
+</section>
+
+<!-- ===== 29. 기본 설정 + 축하 ===== -->
+<section>
+  <h3>Step 3: 기본 설정 + 첫 대화</h3>
+  <div class="compare-grid">
+    <div class="compare-card">
+      <h4 style="font-family:var(--r-code-font);">&gt; /config</h4>
+      <p>&rarr; 모델 선택, 언어 설정 등 기본 설정 확인</p>
+    </div>
+    <div class="compare-card accent-border">
+      <h4 style="font-family:var(--r-code-font);">&gt; 안녕, 내가 방금 만든 CLAUDE.md<br>&nbsp;&nbsp;잘 읽었어? 내 정보 맞는지 확인해줘.</h4>
+      <p></p>
+    </div>
+  </div>
+  <div class="celebration" style="margin-top:1.2em;">
+    <p style="font-size:1.4em; margin:0;">&#127881; 축하합니다!</p>
+    <p style="font-size:0.82em; color:var(--dim); margin:0.3em 0 0 0;">여러분의 첫 Small Win이 완성되었습니다</p>
+    <p style="font-size:0.78em; color:var(--accent); margin:0.2em 0 0 0; font-weight:600;">이제 Claude가 여러분을 알고 있습니다</p>
+  </div>
+</section>
+
+<!-- ===== 30. Part 5 디바이더 ===== -->
+<section class="section-divider" data-background-gradient="radial-gradient(ellipse at 50% 50%, var(--glow-blue) 0%, transparent 55%)">
+  <p class="part-label">Part 5</p>
+  <h2>첫 페달을 밟아보세요!</h2>
+  <div class="line"></div>
+  <p class="sub">핵심 메시지 + 셀프스터디 + Q&amp;A | 15분</p>
+</section>
+
+<!-- ===== 31. 자전거 비유 ===== -->
+<section data-background-gradient="radial-gradient(ellipse at 50% 35%, var(--glow-green) 0%, transparent 45%)">
+  <p style="font-size:3.5em; margin:0; filter:drop-shadow(0 0 20px rgba(168,213,162,0.3));">&#128690;</p>
+  <p class="key-message" style="font-size:1.15em; margin-top:0.4em;">
+    자전거는 백날 강의 듣고<br>교과서 읽어봐야 못 탑니다.<br>
+    <em>한번 타봐야 압니다.</em>
+  </p>
+  <div style="width:80px; height:2px; background:linear-gradient(90deg,var(--accent2),var(--accent)); margin:0.6em auto;"></div>
+  <p style="font-size:0.78em; color:var(--dim);">
+    지금 제일 귀찮은 업무 하나 떠올려보세요.<br>
+    그걸 Claude에게 시켜보세요.<br>
+    <strong style="color:#fff;">그 Small Win 하나가 전부를 바꿉니다.</strong>
+  </p>
+</section>
+
+<!-- ===== 32. 꿀팁 2가지 ===== -->
+<section>
+  <h3>Claude Code 잘 쓰는 꿀팁 2가지</h3>
+  <div class="compare-grid">
+    <div class="compare-card accent-border">
+      <h4>1. Unlearn &mdash; 다 물어보세요</h4>
+      <p>모르는 걸 물어보는 게 민망하다는 생각, 버리세요.<br>
+      내 수준에 맞춰서 부끄럼 없이 뭐든 물어보고, 파고 싶으면 더 파세요.<br>
+      <strong style="color:#fff;">질문이 확장될수록 배우는 것도, 활용할 수 있는 것도 늘어납니다.</strong></p>
+    </div>
+    <div class="compare-card blue-border">
+      <h4>2. Claude를 계속 훈련시키세요</h4>
+      <p>CLAUDE.md와 메모리 기능을 활용해서 &mdash;<br>
+      마음에 안 드는 결과 &rarr; 피드백, 잘한 건 &rarr; 기억시키기,<br>
+      프로젝트마다 맥락 정리 &rarr; <strong style="color:#fff;">쓸수록 나를 이해하는 동료가 됩니다.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 33. 셀프스터디 + QR ===== -->
+<section>
+  <h3>혼자 더 공부하기 &mdash; 셀프스터디 자료</h3>
+  <p class="smaller">후기를 남겨주시면 4일짜리 커리큘럼 + 스킬 패키지를 보내드립니다</p>
+  <div style="display:flex; gap:1.5em; align-items:flex-start; width:92%; margin:0.6em auto;">
+    <div style="flex:1;">
+      <table style="width:100%;">
+        <thead><tr><th>Day</th><th>내용</th><th>직접 해볼 수 있는 것</th></tr></thead>
+        <tbody>
+          <tr><td style="color:var(--accent);font-weight:600;">Day 1</td><td>온보딩</td><td>Claude Code와 대화하며 기본기 익히기</td></tr>
+          <tr><td style="color:var(--accent);font-weight:600;">Day 2</td><td>MCP & Context Sync</td><td>외부 도구 연결 + 나만의 sync 스킬 만들기</td></tr>
+          <tr><td style="color:var(--accent);font-weight:600;">Day 3</td><td>Clarify & GitHub</td><td>모호한 요구사항 정리 + 첫 PR 만들기</td></tr>
+          <tr><td style="color:var(--accent);font-weight:600;">Day 4</td><td>Wrap & Analyze</td><td>세션 분석 + 콘텐츠 소화 파이프라인</td></tr>
+        </tbody>
+      </table>
+      <blockquote style="margin-top:0.5em;">하루 이틀 저녁에 시간 내서 스킬을 직접 돌려보세요.</blockquote>
+    </div>
+    <div style="text-align:center; min-width:200px; padding-top:0.5em;">
+      <p style="font-size:0.78em; font-weight:600; color:var(--accent); margin:0 0 0.4em 0;">후기 남기기</p>
+      <img src="/review-form-qr.png" alt="후기 QR 코드" style="width:170px; height:170px; border-radius:10px; box-shadow:0 0 20px rgba(212,165,116,0.15);">
+      <p class="smaller" style="margin-top:0.4em;">Google Form 후기 링크</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 34. FAQ ===== -->
+<section>
+  <h3>자주 묻는 질문 (FAQ)</h3>
+  <table>
+    <thead><tr><th>질문</th><th>핵심 답변</th></tr></thead>
+    <tbody>
+      <tr><td>보안</td><td>API로 처리, Anthropic은 입력 데이터를 모델 학습에 미사용</td></tr>
+      <tr><td>비용</td><td>Pro($20/월)로 시작 &rarr; 많이 쓰면 Max($100~200/월)</td></tr>
+      <tr><td>스킬 제작</td><td>코딩 불필요 &mdash; 마크다운으로 업무 순서를 자연어로 기술</td></tr>
+      <tr><td>ChatGPT 차이</td><td>내 컴퓨터에서 실행 &rarr; 파일/DB/도구에 직접 접근</td></tr>
+      <tr><td>대시보드 제작 시간</td><td>처음 버전 30분, 대화하면서 계속 발전</td></tr>
+      <tr><td>MCP 보안 이슈</td><td>개인 계정으로 연습 가능, 로컬 작업은 연결 없이 가능</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ===== 35. 치트시트 ===== -->
+<section>
+  <h3>핵심 용어 치트시트</h3>
+  <table>
+    <thead><tr><th>용어</th><th>한 줄 설명</th></tr></thead>
+    <tbody>
+      <tr><td style="color:var(--accent);">Claude Code</td><td>터미널에서 돌아가는 AI 비서 (내 컴퓨터에서 실행)</td></tr>
+      <tr><td style="color:var(--accent);">Markdown (.md)</td><td>AI가 가장 잘 읽는 텍스트 서식 문법</td></tr>
+      <tr><td style="color:var(--accent);">CLAUDE.md</td><td>내 맥락을 저장하는 기억 파일 (매 대화 자동 로드)</td></tr>
+      <tr><td style="color:var(--accent2);">MCP</td><td>AI와 외부 도구를 연결하는 규격 (USB-C 같은 것)</td></tr>
+      <tr><td style="color:var(--accent);">Skill</td><td>반복 업무를 문서화한 매뉴얼 (Claude가 따라함)</td></tr>
+      <tr><td style="color:var(--accent3);">Sub-agent</td><td>Claude가 부르는 또 다른 Claude (병렬 처리)</td></tr>
+      <tr><td style="color:var(--accent2);">Connector</td><td>클릭 한 번으로 외부 도구 연결 (가장 쉬운 MCP)</td></tr>
+      <tr><td style="color:var(--accent);">기획 문서 (PRD/Spec)</td><td>"뭘 만들 건지" 정리한 문서</td></tr>
+      <tr><td style="color:var(--accent);">/init</td><td>프로젝트 구조 분석하여 CLAUDE.md 자동 생성</td></tr>
+      <tr><td style="color:var(--accent);">/config</td><td>Claude Code 기본 설정 화면</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ===== 36. 감사합니다 ===== -->
+<section class="title-slide" data-background-gradient="radial-gradient(ellipse at 25% 55%, var(--glow-accent) 0%, transparent 55%), radial-gradient(ellipse at 75% 30%, var(--glow-blue) 0%, transparent 45%)">
+  <h1 style="font-size:2.4em;">감사합니다</h1>
+  <div style="width:60px; height:2px; background:linear-gradient(90deg,var(--accent),var(--accent2)); margin:0.5em auto;"></div>
+</section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+Reveal.initialize({
+  hash: true,
+  slideNumber: 'c/t',
+  width: 1280,
+  height: 720,
+  margin: 0.04,
+  transition: 'fade',
+  transitionSpeed: 'fast',
+  backgroundTransition: 'fade',
+  center: true,
+  controls: true,
+  controlsLayout: 'edges',
+  progress: true,
+  keyboard: true,
+  overview: true,
+  touch: true,
+});
+</script>
+</body>
+</html>
