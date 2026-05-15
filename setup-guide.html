@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code 세션 — 사전 준비사항</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #080810;
+    --bg2: #0e0e1a;
+    --surface: rgba(255,255,255,0.04);
+    --surface2: rgba(255,255,255,0.08);
+    --border: rgba(255,255,255,0.08);
+    --text: #e0e0ec;
+    --text-dim: #7a7a94;
+    --accent: #d4a574;
+    --accent2: #7eb8da;
+    --accent3: #a8d5a2;
+    --heading: #ffffff;
+  }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 300;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.75;
+    padding: 0 1rem;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 0 5rem;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    background: rgba(212,165,116,0.1);
+    border: 1px solid rgba(212,165,116,0.25);
+    border-radius: 100px;
+    padding: 4px 14px;
+    margin-bottom: 1.2rem;
+    text-transform: uppercase;
+  }
+
+  .header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--heading);
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    margin-bottom: 0.6rem;
+  }
+
+  .header p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 2.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.2rem 1.6rem;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(212,165,116,0.15);
+    border: 1px solid rgba(212,165,116,0.3);
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--heading);
+    letter-spacing: -0.02em;
+  }
+
+  .section-body {
+    padding: 1.6rem;
+  }
+
+  /* Supply list */
+  .supply-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    background: rgba(126,184,218,0.06);
+    border: 1px solid rgba(126,184,218,0.15);
+    border-radius: 10px;
+    font-size: 0.95rem;
+  }
+
+  .supply-item .icon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .supply-item .label {
+    font-weight: 500;
+    color: var(--heading);
+  }
+
+  .supply-item .desc {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin-top: 0.1rem;
+  }
+
+  /* Steps */
+  .steps { display: flex; flex-direction: column; gap: 1rem; }
+
+  .step {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .step-content { flex: 1; }
+
+  .step-label {
+    font-weight: 500;
+    color: var(--heading);
+    font-size: 0.95rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .step-desc {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  /* Tabs */
+  .os-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .tab-btn {
+    padding: 6px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-dim);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .tab-btn.active {
+    background: rgba(212,165,116,0.12);
+    border-color: rgba(212,165,116,0.35);
+    color: var(--accent);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Code block */
+  .code-block {
+    background: rgba(12,12,25,0.95);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    margin: 0.6rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .code-block code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: #a8d5a2;
+    line-height: 1.7;
+    display: block;
+    white-space: pre;
+  }
+
+  .code-block .prompt {
+    color: var(--text-dim);
+    user-select: none;
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    padding: 3px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text-dim);
+    font-size: 0.72rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .copy-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+  .copy-btn.copied { color: var(--accent3); border-color: rgba(168,213,162,0.3); }
+
+  .tip {
+    margin-top: 1rem;
+    padding: 0.85rem 1rem;
+    background: rgba(212,165,116,0.05);
+    border-left: 3px solid rgba(212,165,116,0.4);
+    border-radius: 0 8px 8px 0;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .tip strong { color: var(--accent); }
+
+  /* Subsection */
+  .install-note {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    margin-bottom: 0.5rem;
+  }
+
+  .step-label-mini {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--text-dim);
+    margin: 1rem 0 0.4rem;
+    text-transform: uppercase;
+  }
+
+  /* Success */
+  .success-box {
+    background: rgba(168,213,162,0.06);
+    border: 1px solid rgba(168,213,162,0.2);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .success-box .success-label {
+    color: var(--accent3);
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .success-box code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--accent3);
+    background: rgba(168,213,162,0.08);
+    padding: 0.4rem 0.7rem;
+    border-radius: 6px;
+    display: block;
+    white-space: pre-wrap;
+  }
+
+  /* Checklist */
+  .checklist { display: flex; flex-direction: column; gap: 0.8rem; }
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.9rem 1rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    user-select: none;
+  }
+
+  .check-item:hover { border-color: rgba(212,165,116,0.25); }
+  .check-item.done { border-color: rgba(168,213,162,0.3); background: rgba(168,213,162,0.05); }
+
+  .check-box {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 2px solid var(--border);
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+
+  .check-item.done .check-box {
+    background: rgba(168,213,162,0.2);
+    border-color: var(--accent3);
+    color: var(--accent3);
+  }
+
+  .check-box svg { display: none; width: 13px; height: 13px; }
+  .check-item.done .check-box svg { display: block; }
+
+  .check-text {
+    font-size: 0.92rem;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  .check-item.done .check-text {
+    color: var(--text-dim);
+    text-decoration: line-through;
+  }
+
+  /* Divider */
+  hr { border: none; border-top: 1px solid var(--border); margin: 0.75rem 0; }
+
+  @media (max-width: 480px) {
+    .header h1 { font-size: 1.5rem; }
+    .section-body { padding: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="badge">Claude Code 세션</div>
+    <h1>사전 준비사항</h1>
+    <p>세션 시작 전에 아래 3가지를 미리 완료해주세요</p>
+  </div>
+
+  <!-- Section 1: 준비물 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div class="section-title">준비물</div>
+    </div>
+    <div class="section-body">
+      <div class="supply-item">
+        <div class="icon">💻</div>
+        <div>
+          <div class="label">노트북 + 충전기</div>
+          <div class="desc">Mac / Windows 모두 가능합니다</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: Claude Pro 구독 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div class="section-title">Claude Pro 구독하기</div>
+    </div>
+    <div class="section-body">
+      <p style="font-size:0.9rem; margin-bottom:1.2rem; color:var(--text-dim);">
+        세션에서 Claude Code를 직접 실습하려면 <strong style="color:var(--text);">Claude Pro 플랜 이상 구독이 필요합니다.</strong>
+      </p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-label">claude.ai 접속 → 회원가입 / 로그인</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-label">Pro 플랜 구독 <span style="color:var(--text-dim); font-weight:300;">($20/월)</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="tip" style="margin-top:1.2rem;">
+        이미 구독 중이면 패스! &nbsp;어차피 클코 매력에 빠지시면 $100 이상 Max 플랜 무조건 구독하시게 됩니다.
+        우선은 Pro로 시작하시고, 나중에 차액만 내고 Max로 올리실 수 있으니 부담 갖지 마세요 🙂
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: Claude Code 설치 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div class="section-title">Claude Code 설치하기</div>
+    </div>
+    <div class="section-body">
+      <div class="os-tabs">
+        <button class="tab-btn active" onclick="switchTab('mac', this)">🍎 Mac</button>
+        <button class="tab-btn" onclick="switchTab('win', this)">🪟 Windows</button>
+      </div>
+
+      <!-- Mac -->
+      <div id="tab-mac" class="tab-content active">
+        <div class="step-label-mini">1단계 — 터미널 열기</div>
+        <p class="install-note">맥에서 '터미널'은 컴퓨터에게 글자로 명령을 내리는 앱입니다.</p>
+        <p class="install-note">⌘ Command + Space → <strong style="color:var(--text)">터미널</strong> 입력 → Enter</p>
+
+        <div class="step-label-mini">2단계 — Claude Code 설치</div>
+        <div class="code-block">
+          <code><span class="prompt">$ </span>curl -fsSL https://claude.ai/install.sh | bash</code>
+          <button class="copy-btn" onclick="copyCode(this, 'curl -fsSL https://claude.ai/install.sh | bash')">복사</button>
+        </div>
+
+        <div class="step-label-mini">3단계 — 실행 + 로그인</div>
+        <div class="code-block">
+          <code><span class="prompt">$ </span>claude</code>
+          <button class="copy-btn" onclick="copyCode(this, 'claude')">복사</button>
+        </div>
+        <p class="install-note" style="margin-top:0.5rem;">브라우저가 열리면 Claude 계정으로 로그인해주세요.</p>
+
+        <div class="success-box">
+          <div class="success-label">✓ 성공 화면</div>
+          <code>🐷 Claude Code v2.x.x  Sonnet 4.6 (200k context) · Claude Pro
+/Users/me ❯ ▊</code>
+        </div>
+      </div>
+
+      <!-- Windows -->
+      <div id="tab-win" class="tab-content">
+        <div class="step-label-mini">1단계 — PowerShell 열기</div>
+        <p class="install-note">윈도우에서 'PowerShell'은 컴퓨터에게 글자로 명령을 내리는 앱입니다.</p>
+        <p class="install-note">⊞ Win 키 → <strong style="color:var(--text)">PowerShell</strong> 입력 → Enter</p>
+        <p class="install-note" style="color:rgba(212,165,116,0.7);">⚠️ '명령 프롬프트(cmd)'가 아닌 'PowerShell'을 열어주세요</p>
+
+        <div class="step-label-mini">2단계 — Git 설치 확인</div>
+        <div class="code-block">
+          <code><span class="prompt">PS&gt; </span>git --version</code>
+          <button class="copy-btn" onclick="copyCode(this, 'git --version')">복사</button>
+        </div>
+        <p class="install-note" style="margin-top:0.3rem;">버전 숫자가 뜨면 OK. 오류가 나면 <a href="https://git-scm.com/download/win" target="_blank" style="color:var(--accent2);">git-scm.com</a>에서 설치 후 진행해주세요.</p>
+
+        <div class="step-label-mini">3단계 — Claude Code 설치</div>
+        <div class="code-block">
+          <code><span class="prompt">PS&gt; </span>irm https://claude.ai/install.ps1 | iex</code>
+          <button class="copy-btn" onclick="copyCode(this, 'irm https://claude.ai/install.ps1 | iex')">복사</button>
+        </div>
+
+        <div class="step-label-mini">4단계 — 실행 + 로그인</div>
+        <div class="code-block">
+          <code><span class="prompt">PS&gt; </span>claude</code>
+          <button class="copy-btn" onclick="copyCode(this, 'claude')">복사</button>
+        </div>
+        <p class="install-note" style="margin-top:0.5rem;">브라우저가 열리면 Claude 계정으로 로그인해주세요.</p>
+
+        <div class="success-box">
+          <div class="success-label">✓ 성공 화면</div>
+          <code>🐷 Claude Code v2.x.x  Sonnet 4.6 (200k context) · Claude Pro
+C:\Users\me ❯ ▊</code>
+        </div>
+      </div>
+
+      <div class="tip">
+        <strong>설치가 안 될 때:</strong> ChatGPT나 Claude에게 에러 메시지를 그대로 붙여넣으면 대부분 해결됩니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: 세션 전 확인사항 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div class="section-title">세션 전 확인 사항</div>
+    </div>
+    <div class="section-body">
+      <div class="checklist">
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="2,7 5.5,10.5 12,3.5"/>
+            </svg>
+          </div>
+          <div class="check-text">Claude Pro 구독 완료</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="2,7 5.5,10.5 12,3.5"/>
+            </svg>
+          </div>
+          <div class="check-text">Claude Code 설치 + 로그인 완료</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="2,7 5.5,10.5 12,3.5"/>
+            </svg>
+          </div>
+          <div class="check-text">노트북 + 충전기 챙기기</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function switchTab(os, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + os).classList.add('active');
+  }
+
+  function copyCode(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '복사됨!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = '복사'; btn.classList.remove('copied'); }, 1800);
+    });
+  }
+
+  function toggleCheck(el) {
+    el.classList.toggle('done');
+  }
+</script>
+</body>
+</html>
